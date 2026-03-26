@@ -1,0 +1,52 @@
+generator client {
+  provider = "prisma-client-py"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model AirQuality {
+  id                String   @id @map("_id") @db.ObjectId @default(auto())
+  latitude          Float?
+  longitude         Float?
+  us_aqi            Int?
+  pm10              Float?
+  pm2_5             Float?
+  carbon_monoxide   Float?
+  nitrogen_dioxide  Float?
+  sulphur_dioxide   Float?
+  ozone             Float?
+  measuredAt        DateTime
+  createdAt         DateTime @default(now())
+}
+
+
+model AirQualityPrediction {
+  id                 String   @id @map("_id") @db.ObjectId @default(auto())
+  latitude           Float
+  longitude          Float
+  us_aqi             Float?
+  pm10               Float?
+  pm2_5              Float?
+  carbon_monoxide    Float?
+  nitrogen_dioxide   Float?
+  sulphur_dioxide    Float?
+  ozone              Float?
+
+  predictedFor       DateTime   // tomorrow date
+  basedOn            DateTime   // today's measurement time
+
+  createdAt          DateTime @default(now())
+}
+
+model ModelMetrics {
+  id              String   @id @map("_id") @db.ObjectId @default(auto())
+  modelName       String
+  r2Score         Float
+  rmse            Float
+  mae             Float
+  crossValidation Float
+  createdAt       DateTime @default(now())
+}
